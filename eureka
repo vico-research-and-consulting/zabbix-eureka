@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import requests
+import json
+import sys
+
+uri=sys.argv[1]
+action=sys.argv[2]
+
+if action == "health":
+  uri=uri+"/health"
+  r = requests.get(uri, headers={"Accept": "application/json"}, timeout=2)
+  result = json.loads(r.text)
+  print(result['status'])
+elif action == "discover":
+  uri=uri+"/eureka/apps"
+  r = requests.get(uri, headers={"Accept": "application/json"}, timeout=2)
+  result = json.loads(r.text)
+  data = []
+  for app_data in result['applications']['application']:
+      data.append({ '{#APPLICATION}': app_data['name'] })
+  data = { "data": [ data ] }
+  print(json.dumps(data, indent=2, sort_keys=True))
+elif action == "get":
+  uri=uri+"/eureka/apps"
+  r = requests.get(uri, headers={"Accept": "application/json"}, timeout=2)
+  result = json.loads(r.text)
+  data = {}
+  for app_data in result['applications']['application']:
+       instances = 0
+       instances_good = 0
+       for instance_data in app_data['instance']:
+            instances += 1
+            if instance_data['status'] == "UP":
+               instances_good += 1
+       if instances_good == instances:
+           status = "OK: %s/%s" % (instances_good,instances)
+       elif instances_good > 0:
+           status = "WARN: %s/%s" % (instances_good,instances)
+       else:
+           status = "ERROR: %s/%s" % (instances_good,instances)
+       
+       data[app_data["name"]] = { "good": instances_good, "num": instances, "status": status }
+  if len(sys.argv) != 4:
+      print(json.dumps(data))
+  else:
+      print(json.dumps(data[sys.argv[3]]["status"]))
+else:
+   print(sys.argv[0]+" health|discover|get <item>")
