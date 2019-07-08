@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2019-07-08T11:38:39Z</date>
+    <date>2019-07-08T18:29:03Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -67,12 +67,12 @@
             </items>
             <discovery_rules>
                 <discovery_rule>
-                    <name>Applications</name>
+                    <name>Eureka Applications</name>
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>eureka[http://{HOST.CONN}:{$EUREKA_PORT}, discover]</key>
-                    <delay>10m</delay>
+                    <key>eureka[http://{HOST.CONN}:{$EUREKA_PORT},discover]</key>
+                    <delay>2h</delay>
                     <status>0</status>
                     <allowed_hosts/>
                     <snmpv3_contextname/>
@@ -103,7 +103,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>eureka[get,{#APPLICATION}]</key>
+                            <key>eureka[http://{HOST.CONN}:{$EUREKA_PORT},get,{#APPLICATION}]</key>
                             <delay>5m</delay>
                             <history>14d</history>
                             <trends>0</trends>
@@ -143,13 +143,13 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Custom - App - Eureka:eureka[get,{#APPLICATION}].str(&quot;ERROR&quot;)}=1</expression>
+                            <expression>{Custom - App - Eureka:eureka[http://{HOST.CONN}:{$EUREKA_PORT},get,{#APPLICATION}].str(&quot;ERROR&quot;)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Status {#APPLICATION} -  all  instances not available</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
-                            <url/>
+                            <url>http://{HOST.CONN}:{$EUREKA_PORT}</url>
                             <status>0</status>
                             <priority>3</priority>
                             <description/>
@@ -158,20 +158,20 @@
                             <dependencies>
                                 <dependency>
                                     <name>Status {#APPLICATION} -  instances not available</name>
-                                    <expression>{Custom - App - Eureka:eureka[get,{#APPLICATION}].str(&quot;WARN&quot;)}=1</expression>
+                                    <expression>{Custom - App - Eureka:eureka[http://{HOST.CONN}:{$EUREKA_PORT},get,{#APPLICATION}].str(&quot;WARN&quot;)}=1</expression>
                                     <recovery_expression/>
                                 </dependency>
                             </dependencies>
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Custom - App - Eureka:eureka[get,{#APPLICATION}].str(&quot;WARN&quot;)}=1</expression>
+                            <expression>{Custom - App - Eureka:eureka[http://{HOST.CONN}:{$EUREKA_PORT},get,{#APPLICATION}].str(&quot;WARN&quot;)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Status {#APPLICATION} -  instances not available</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
-                            <url/>
+                            <url>http://{HOST.CONN}:{$EUREKA_PORT}</url>
                             <status>0</status>
                             <priority>2</priority>
                             <description/>
@@ -181,13 +181,13 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Custom - App - Eureka:eureka[get,{#APPLICATION}].nodata(10m)}=1</expression>
+                            <expression>{Custom - App - Eureka:eureka[http://{HOST.CONN}:{$EUREKA_PORT},get,{#APPLICATION}].nodata(10m)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Status {#APPLICATION} -  no data</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
-                            <url/>
+                            <url>http://{HOST.CONN}:{$EUREKA_PORT}</url>
                             <status>0</status>
                             <priority>3</priority>
                             <description/>
