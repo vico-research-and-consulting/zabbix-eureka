@@ -19,7 +19,7 @@ elif action == "discover":
   data = []
   for app_data in result['applications']['application']:
       data.append({ '{#APPLICATION}': app_data['name'] })
-  data = { "data": [ data ] }
+  data = { "data":  data }
   print(json.dumps(data, indent=2, sort_keys=True))
 elif action == "get":
   uri=uri+"/eureka/apps"
@@ -44,6 +44,6 @@ elif action == "get":
   if len(sys.argv) != 4:
       print(json.dumps(data))
   else:
-      print(json.dumps(data[sys.argv[3]]["status"]))
+      print(data[sys.argv[3]]["status"])
 else:
    print(sys.argv[0]+" health|discover|get <item>")
