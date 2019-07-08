@@ -35,7 +35,7 @@ elif action == "get":
                instances_good += 1
        if instances_good == instances:
            status = "OK: %s/%s" % (instances_good,instances)
-       elif instances_good > 0:
+       elif instances_good != 0:
            status = "WARN: %s/%s" % (instances_good,instances)
        else:
            status = "ERROR: %s/%s" % (instances_good,instances)
