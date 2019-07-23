@@ -6,17 +6,18 @@ import requests
 import os
 import datetime
 
+
+def usage():
+    print(sys.argv[0]+" <connection> (health|discover|get <item>)")
+    sys.exit(1)
+
 if len(sys.argv) < 2:
-    help()
+    usage()
 
 TIMEOUT_REQUEST=2
 
 BASE_URL = sys.argv[1]
 ACTION = sys.argv[2]
-
-def help():
-    print(sys.argv[0]+" <connection>:<port> (health|discover|get <item>)")
-    sys.exit(1)
 
 def get_health(uri):
   uri=uri+"/health"
@@ -108,9 +109,8 @@ elif ACTION == "discover":
   get_discovery(BASE_URL)
 elif ACTION == "get":
   get_status(BASE_URL)
-
 else:
-   help()
+   usage()
 
 # vim: ai et ts=2 shiftwidth=2 expandtab
 
