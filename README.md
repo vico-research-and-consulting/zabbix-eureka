@@ -5,6 +5,7 @@ This project enhances zabbix with a externalscript which provides the following 
 
 - monitor the general health of eureka
 - discover eureka applications
+  (except they contain the string "TESTING" or "INTEGRATION")
 - monitor disovered eureka applications
 
 A documentation of the monitoring capabilities can be reviewed by this [html-documentation](http://htmlpreview.github.io/?https://github.com/vico-research-and-consulting/zabbix-eureka/blob/master/templates/documentation/custom__app__eureka.xml).

@@ -44,6 +44,8 @@ def get_discovery(uri):
   result = json.loads(r.text)
   data = []
   for app_data in result['applications']['application']:
+      if  app_data['name'].find("TESTING") >= 0 or app_data['name'].find("INTEGRATION") >= 0:
+        continue
       data.append({ '{#APPLICATION}': app_data['name'] })
   data = { "data":  data }
   print(json.dumps(data, indent=2, sort_keys=True))
