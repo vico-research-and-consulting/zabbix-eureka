@@ -64,20 +64,20 @@ def get_status(uri):
         with open(CACHE_FILE, 'r') as fh:
             result = json.loads(fh.read())
 
-  uri=uri+"/eureka/apps"
-  try:
-      r = requests.get(uri, headers={"Accept": "application/json"}, timeout=TIMEOUT_REQUEST)
-      result = json.loads(r.text)
-  except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
-      print("DOWN: unable to get state, connection/request timeout")
-      sys.exit(1)
-  except requests.exceptions.ConnectionError:
-      print("DOWN: unable to get state, connection error")
-      sys.exit(1)
+  if not cache_valid:
+    uri=uri+"/eureka/apps"
+    try:
+        r = requests.get(uri, headers={"Accept": "application/json"}, timeout=TIMEOUT_REQUEST)
+        result = json.loads(r.text)
+    except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+        print("DOWN: unable to get state, connection/request timeout")
+        sys.exit(1)
+    except requests.exceptions.ConnectionError:
+        print("DOWN: unable to get state, connection error")
+        sys.exit(1)
 
-
-  with open(CACHE_FILE, 'w') as fh:
-      fh.write(json.dumps(result))
+    with open(CACHE_FILE, 'w') as fh:
+        fh.write(json.dumps(result))
 
   data = {}
   for app_data in result['applications']['application']:
