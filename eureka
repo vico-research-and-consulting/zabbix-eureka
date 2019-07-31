@@ -5,7 +5,7 @@ import sys
 import requests
 import os
 import datetime
-import requests.exceptions
+from requests.exceptions import ConnectTimeout
 
 
 def usage():
