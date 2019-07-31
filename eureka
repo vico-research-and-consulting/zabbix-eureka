@@ -5,6 +5,7 @@ import sys
 import requests
 import os
 import datetime
+import requests.exceptions
 
 
 def usage():
@@ -25,8 +26,8 @@ def get_health(uri):
       r = requests.get(uri, headers={"Accept": "application/json"}, timeout=TIMEOUT_REQUEST)
       result = json.loads(r.text)
       print(result['status'])
-  except requests.exceptions.ConnectTimeout:
-      print("DOWN: unable to get state, connection timeout")
+  except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+      print("DOWN: unable to get state, connection/request timeout")
   except requests.exceptions.ConnectionError:
       print("DOWN: unable to get state, connection error")
 
@@ -34,8 +35,8 @@ def get_discovery(uri):
   uri=uri+"/eureka/apps"
   try:
   	r = requests.get(uri, headers={"Accept": "application/json"}, timeout=TIMEOUT_REQUEST)
-  except requests.exceptions.ConnectTimeout:
-      print("DOWN: unable to application data, connection timeout")
+  except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+      print("DOWN: unable to application data, connection/request timeout")
       sys.exit(1)
   except requests.exceptions.ConnectionError:
       print("DOWN: unable to application data, connection error")
@@ -67,8 +68,8 @@ def get_status(uri):
   try:
       r = requests.get(uri, headers={"Accept": "application/json"}, timeout=TIMEOUT_REQUEST)
       result = json.loads(r.text)
-  except requests.exceptions.ConnectTimeout:
-      print("DOWN: unable to get state, connection timeout")
+  except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+      print("DOWN: unable to get state, connection/request timeout")
       sys.exit(1)
   except requests.exceptions.ConnectionError:
       print("DOWN: unable to get state, connection error")
